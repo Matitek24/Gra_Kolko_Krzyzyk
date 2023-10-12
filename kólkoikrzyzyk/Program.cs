@@ -9,90 +9,93 @@ namespace KółkoIKrzyżyk
         private int gracz; // Numer aktualnego gracza
         private Label info_etykieta; // Etykieta informacji o aktualnym graczu
         private Label win_etykieta; // Etykieta informacji o zwycięzcy
-
         public MainForm()
         {
             // Konfiguracja okna głównego
-            this.Text = "Gra w Kółko i Krzyżyk";
-            this.Size = new System.Drawing.Size(300, 400);
-            this.BackColor = System.Drawing.Color.FromArgb(240, 240, 240);
-            guzik = new Button[3, 3]; // Inicjalizacja przycisków na planszy
+            this.Text = "Gra w Kółko i Krzyżyk"; // Ustawienie tytułu okna
+            this.Size = new System.Drawing.Size(300, 400); // Ustawienie rozmiaru okna
+            this.BackColor = System.Drawing.Color.White; // Ustawienie koloru tła okna
+            guzik = new Button[3, 3]; // Inicjalizacja tablicy przycisków planszy
             gracz = 1; // Początkowo gra rozpoczyna się od gracza 1 (Kółko)
 
-            info_etykieta = new Label();
-            info_etykieta.Text = "Gracz 1 (Kółko) zaczyna";
-            info_etykieta.Location = new System.Drawing.Point(10, 240);
-            info_etykieta.Size = new System.Drawing.Size(230, 30);
-            info_etykieta.Font = new System.Drawing.Font("Verdana", 12);
-            this.Controls.Add(info_etykieta);
-
-            win_etykieta = new Label();
-            win_etykieta.Text = "Wynik gry: Brak zwycięzcy";
-            win_etykieta.Location = new System.Drawing.Point(10, 270);
-            win_etykieta.Size = new System.Drawing.Size(600, 30);
-            win_etykieta.Font = new System.Drawing.Font("Verdana", 11, System.Drawing.FontStyle.Bold);
-            this.Controls.Add(win_etykieta);
 
             // Inicjalizacja przycisków na planszy
+
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    guzik[i, j] = new Button();
-                    guzik[i, j].Size = new System.Drawing.Size(80, 80);
-                    guzik[i, j].Location = new System.Drawing.Point(i * 80, j * 80);
-                    guzik[i, j].Font = new System.Drawing.Font("Arial", 32, System.Drawing.FontStyle.Bold);
-                    guzik[i, j].Click += new EventHandler(plansza);
-                    guzik[i, j].Tag = 0; // 0 oznacza puste pole
-                    guzik[i, j].FlatStyle = FlatStyle.Flat;
-                    guzik[i, j].BackColor = System.Drawing.Color.FromArgb(220, 220, 220);
-                    this.Controls.Add(guzik[i, j]);
+                    guzik[i, j] = new Button(); // Tworzenie nowego przycisku
+                    guzik[i, j].Size = new System.Drawing.Size(80, 80); // Ustawienie rozmiaru przycisku
+                    guzik[i, j].Location = new System.Drawing.Point(i * 80, j * 80); // Ustawienie pozycji przycisku
+                    guzik[i, j].Font = new System.Drawing.Font("Arial", 32, System.Drawing.FontStyle.Bold); // Ustawienie czcionki przycisku
+                    guzik[i, j].Click += new EventHandler(plansza); // Dodanie obsługi zdarzenia kliknięcia na przycisku
+                    guzik[i, j].Tag = 0; // Ustawienie Tag przycisku na 0, oznaczający puste pole
+                    guzik[i, j].FlatStyle = FlatStyle.Flat; // Ustawienie płaskiego stylu przycisku
+                    guzik[i, j].BackColor = System.Drawing.Color.FromArgb(220, 220, 220); // Ustawienie koloru tła przycisku
+                    this.Controls.Add(guzik[i, j]); // Dodanie przycisku do kontrolek na oknie
                 }
             }
+
+            // Konfiguracja etykiety informującej o aktualnym graczu
+            info_etykieta = new Label();
+            info_etykieta.Text = "Gracz 1 (Kółko) zaczyna";
+            info_etykieta.Location = new System.Drawing.Point(10, 250);
+            info_etykieta.Size = new System.Drawing.Size(230, 30);
+            info_etykieta.Font = new System.Drawing.Font("Verdana", 12);
+            this.Controls.Add(info_etykieta); // Dodanie etykiety do kontrolek na oknie
+
+            // Konfiguracja etykiety informującej o stanie gry
+            win_etykieta = new Label();
+            win_etykieta.Text = "Wynik gry: ----";
+            win_etykieta.Location = new System.Drawing.Point(10, 280);
+            win_etykieta.Size = new System.Drawing.Size(600, 30);
+            win_etykieta.Font = new System.Drawing.Font("Verdana", 11, System.Drawing.FontStyle.Bold);
+            this.Controls.Add(win_etykieta); // Dodanie etykiety do kontrolek na oknie
+
         }
 
         private void plansza(object sender, EventArgs e)
         {
-            Button button = (Button)sender;
+            Button pole = (Button)sender; // Pobranie przycisku, który został kliknięty
 
-            if ((int)button.Tag == 0) // Jeśli pole jest puste
+            if ((int)pole.Tag == 0) // Jeśli pole jest puste
             {
                 if (gracz == 1)
                 {
-                    button.Text = "O"; // Gracz 1 (Kółko)
-                    button.Tag = 1;
-                    gracz = 2;
-                    info_etykieta.Text = "Gracz 2 (Krzyżyk)";
+                    pole.Text = "O"; // Ustawienie "O" dla Gracza 1 (Kółko)
+                    pole.Tag = 1; // Ustawienie Tag przycisku na 1, oznaczając, że pole jest teraz zajęte przez Gracza 1
+                    gracz = 2; // Zmiana aktualnego gracza na Gracza 2 (Krzyżyk)
+                    info_etykieta.Text = "Gracz 2 (Krzyżyk)"; // Aktualizacja etykiety informującej o aktualnym graczu
                 }
                 else
                 {
-                    button.Text = "X"; // Gracz 2 (Krzyżyk)
-                    button.Tag = 2;
-                    gracz = 1;
-                    info_etykieta.Text = "Gracz 1 (Kółko)";
+                    pole.Text = "X"; // Ustawienie "X" dla Gracza 2 (Krzyżyk)
+                    pole.Tag = 2; // Ustawienie Tag przycisku na 2, oznaczając, że pole jest teraz zajęte przez Gracza 2
+                    gracz = 1; // Zmiana aktualnego gracza na Gracza 1 (Kółko)
+                    info_etykieta.Text = "Gracz 1 (Kółko)"; // Aktualizacja etykiety informującej o aktualnym graczu
                 }
 
-                button.Enabled = false; // Dezaktywacja przycisku po ruchu
+                pole.Enabled = false; // Dezaktywacja przycisku po ruchu, aby uniknąć kolejnych zmian
 
                 if (wygrany() == true) // Sprawdzenie, czy jest zwycięzca
                 {
-                    string zwyciezca = "Brak zwycięzcy";
+                    string zwyciezca = "Brak zwycięzcy"; // Początkowo brak zwycięzcy
                     if (gracz == 1)
                         zwyciezca = "Gracz 2 (Krzyżyk)";
                     else if (gracz == 2)
                         zwyciezca = "Gracz 1 (Kółko)";
 
-                    win_etykieta.Text = "Wynik gry: " + zwyciezca + " wygrywa!";
-                    zielony(); // Podświetlenie zwycięskiego wzorca
-                    wylacz_guzik(); // Dezaktywacja wszystkich przycisków
+                    win_etykieta.Text = "Wynik gry: " + zwyciezca + " wygrywa!"; // Wyświetlenie informacji o zwycięzcy
+                    zielony(); // Wywołanie funkcji podświetlającej zwycięski wzorzec na zielono
+                    wylacz_guzik(); // Wywołanie funkcji dezaktywującej wszystkie przyciski, aby zakończyć grę
                 }
                 else if (remis()) // Sprawdzenie remisu
                 {
-                    win_etykieta.Text = "Wynik gry: Remis!";
+                    win_etykieta.Text = "Wynik gry: Remis!"; // Wyświetlenie informacji o remisie
                 }
             }
         }
-
 
 
         private bool wygrany()
@@ -123,9 +126,6 @@ namespace KółkoIKrzyżyk
             // Jeśli nie znaleziono zwycięzcy, zwracamy false
             return false;
         }
-
-
-
 
         private void zielony()
         {
