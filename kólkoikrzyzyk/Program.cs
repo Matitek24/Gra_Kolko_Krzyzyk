@@ -165,7 +165,6 @@ namespace KółkoIKrzyżyk
         }
 
 
-
         private void wylacz_guzik()
         {
             foreach (Button btn in guzik)
