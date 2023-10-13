@@ -16,7 +16,7 @@ namespace KółkoIKrzyżyk
         {
             // Konfiguracja okna głównego
             this.Text = "Gra w Kółko i Krzyżyk"; // Ustawienie tytułu okna
-            this.Size = new System.Drawing.Size(300, 400); // Ustawienie rozmiaru okna
+            this.Size = new System.Drawing.Size(340, 420); // Ustawienie rozmiaru okna
             this.BackColor = System.Drawing.Color.White; // Ustawienie koloru tła okna
             guzik = new Button[3, 3]; // Inicjalizacja tablicy przycisków planszy
             gracz = 1; // Początkowo gra rozpoczyna się od gracza 1 (Kółko)
@@ -109,6 +109,11 @@ namespace KółkoIKrzyżyk
                 else if (remis()) // Sprawdzenie remisu
                 {
                     win_etykieta.Text = "Wynik gry: Remis!"; // Wyświetlenie informacji o remisie
+                    foreach (Button btn in guzik)
+                    {
+                        btn.BackColor = System.Drawing.Color.Orange;
+                    }
+                    alert_wygranego("remis");
                 }
             }
         }
