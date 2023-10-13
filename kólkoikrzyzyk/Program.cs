@@ -9,6 +9,9 @@ namespace KółkoIKrzyżyk
         private int gracz; // Numer aktualnego gracza
         private Label info_etykieta; // Etykieta informacji o aktualnym graczu
         private Label win_etykieta; // Etykieta informacji o zwycięzcy
+        private Button reset; // Przycisk do wyłączenia aplikacji
+        private bool gameOver;
+
         public MainForm()
         {
             // Konfiguracja okna głównego
@@ -53,12 +56,24 @@ namespace KółkoIKrzyżyk
             win_etykieta.Font = new System.Drawing.Font("Verdana", 11, System.Drawing.FontStyle.Bold);
             this.Controls.Add(win_etykieta); // Dodanie etykiety do kontrolek na oknie
 
+
+            reset = new Button();
+            reset.Text = "Nowa Gra";
+            reset.Size = new System.Drawing.Size(150, 40);
+            reset.Location = new System.Drawing.Point(10, 320);
+            reset.Click += new EventHandler(reset_gry_funkcja);
+            reset.FlatStyle = FlatStyle.Flat;
+            reset.Visible = false;
+            reset.Font = new System.Drawing.Font("Verdana", 11, System.Drawing.FontStyle.Bold);
+            this.Controls.Add(reset);
+
+
         }
 
         private void plansza(object sender, EventArgs e)
         {
             Button pole = (Button)sender; // Pobranie przycisku, który został kliknięty
-
+           
             if ((int)pole.Tag == 0) // Jeśli pole jest puste
             {
                 if (gracz == 1)
@@ -89,11 +104,49 @@ namespace KółkoIKrzyżyk
                     win_etykieta.Text = "Wynik gry: " + zwyciezca + " wygrywa!"; // Wyświetlenie informacji o zwycięzcy
                     zielony(); // Wywołanie funkcji podświetlającej zwycięski wzorzec na zielono
                     wylacz_guzik(); // Wywołanie funkcji dezaktywującej wszystkie przyciski, aby zakończyć grę
+                    alert_wygranego(zwyciezca);
                 }
                 else if (remis()) // Sprawdzenie remisu
                 {
                     win_etykieta.Text = "Wynik gry: Remis!"; // Wyświetlenie informacji o remisie
                 }
+            }
+        }
+
+
+        private void reset_gry_funkcja(object sender, EventArgs e)
+        {
+            resetuj_gre(); // Wyłączanie aplikacji po kliknięciu przycisku "Wyłącz aplikację"
+        }
+
+        private void resetuj_gre()
+        {
+            // Przywracanie początkowych ustawień gry
+            gracz = 1;
+            info_etykieta.Text = "Gracz 1 (Kółko) zaczyna";
+            win_etykieta.Text = "Wynik gry: Brak zwycięzcy";
+            reset.Visible = false; // Ukryj przycisk wyłączenia aplikacji
+            gameOver = false;
+
+            // Resetowanie przycisków planszy
+            foreach (Button btn in guzik)
+            {
+                btn.Enabled = true;
+                btn.Text = "";
+                btn.Tag = 0;
+                btn.BackColor = System.Drawing.Color.FromArgb(220, 220, 220);
+            }
+        }
+
+
+        private void alert_wygranego(string winner)
+        {
+            if (gameOver == false)
+            {
+                win_etykieta.Text = "Wynik gry: " + winner + " wygrywa!";
+                MessageBox.Show("Gratulacje, " + winner + " wygrał!", "Koniec gry", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                reset.Visible = true; // Po zakończeniu gry pokazujemy przycisk wyłączenia aplikacji
+                gameOver = true;
             }
         }
 
